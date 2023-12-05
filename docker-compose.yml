@@ -19,7 +19,8 @@ services:
     volumes:
       - ./:/home/jovyan/work
     #   - /tmp/.X11-unix:/tmp/.X11-unix:rw
-    # environment:
+    environment:
+      - GRANT_SUDO=yes
     #   - DISPLAY
     #   - NVIDIA_DRIVER_CAPABILITIES=all
     # deploy:
