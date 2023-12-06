@@ -1,4 +1,4 @@
-FROM jupyter/minimal-notebook:python-3.10
+FROM --platform=linux/arm64 jupyter/minimal-notebook:python-3.10
 
 # --- Define Environment Variables--- #
 ENV ROS_DISTRO=humble
@@ -32,10 +32,13 @@ RUN apt update && \
     update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
+
 # --- Install Oh-my-bash --- #
 USER ${NB_USER}
 RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --unattended
 COPY --chown=${NB_USER}:users ./bashrc.sh /home/${NB_USER}/.bashrc
+
+
 
 USER root
 # --- Install ROS --- #
@@ -46,8 +49,8 @@ RUN apt update && \
     apt upgrade -y && \
     apt install -y \
         ros-dev-tools \
-        ros-${ROS_DISTRO}-${ROS_PKG} \
-        ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
+        ros-${ROS_DISTRO}-${ROS_PKG}  && \
+##        ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
     apt clean && \
     echo "source ${ROS_PATH}/setup.bash" >> /root/.bashrc && \
     echo "source ${ROS_PATH}/setup.bash" >> /home/${NB_USER}/.bashrc
@@ -61,6 +64,7 @@ RUN apt update && apt install -y \
         gdm3 \
         tmux \
         nautilus \
+        qemu-user-static binfmt-support \
         gnome-shell \
         gnome-session \
         gnome-terminal \
@@ -77,6 +81,8 @@ RUN pip install --upgrade \
         jupyter-server-proxy \
         jupyter-ai \
         openai \
+        opencv-python \
+        sidecar \
         Pillow \
         rosdep \
         lark \

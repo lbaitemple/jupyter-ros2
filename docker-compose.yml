@@ -1,26 +1,31 @@
-version: '3'
+version: '3.8'
 services:
   jupyter-ros2:
-    image: intel4coro/jupyter-ros2:humble-py3.10
+    image: lbai/jupyter-ros2:python-3.10
+#intel4coro/jupyter-ros2:humble-py3.10
     build:
       context: ./
-      dockerfile: ./Dockerfile
+#      dockerfile: ./Dockerfile
     stdin_open: true
     tty: true
     ports: 
       - 8888:8888
       - 11311:11311
     privileged: true
-    # user: root
-    user: jovyan
+    user: root
+    #user: jovyan
+    environment:
+      GRANT_SUDO: "yes"
+      NB_GID: 100
+      NB_USER: "jovyan"
+      CHOWN_HOME: "yes" 
     working_dir: /home/jovyan
     command: jupyter lab --allow-root --NotebookApp.token='' --no-browser --ip=0.0.0.0
     entrypoint: ["/home/jovyan/work/entrypoint.sh"]
     volumes:
       - ./:/home/jovyan/work
     #   - /tmp/.X11-unix:/tmp/.X11-unix:rw
-    environment:
-      - GRANT_SUDO=yes
+    # environment:
     #   - DISPLAY
     #   - NVIDIA_DRIVER_CAPABILITIES=all
     # deploy:
