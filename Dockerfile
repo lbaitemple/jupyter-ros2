@@ -132,6 +132,18 @@ WORKDIR /home/${NB_USER}
 # --- Appy JupyterLab custom Settings --- #
 COPY --chown=${NB_USER}:users ./jupyter-settings.json /opt/conda/share/jupyter/lab/settings/overrides.json
 
+# Clone the demos_ros_cpp package from within the ROS Demos monorepo.
+RUN mkdir -p /ws/src
+ADD robot_ws/src /ws/src
+WORKDIR /ws
+
+    
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} \
+     --skip-keys=gazebo_plugins \
+    --skip-keys=velodyne_gazebo_plugins -y && \
+    colcon build --build-base workspace/build --install-base /opt/ros_demos
+
 # --- Entrypoint --- #
 COPY --chown=${NB_USER}:users entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
