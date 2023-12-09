@@ -126,6 +126,22 @@ RUN apt install -y \
     ros-${ROS_DISTRO}-turtle-tf2-py \
     ros-${ROS_DISTRO}-tf2-tools \
     ros-${ROS_DISTRO}-tf-transformations
+RUN apt-get update && apt-get install ros-$ROS_DISTRO-example-interfaces \
+ros-$ROS_DISTRO-xacro  ros-$ROS_DISTRO-robot-localization ros-$ROS_DISTRO-nav2-bringup libasound2-dev gstreamer1.0 alsa-utils ffmpeg -y
+
+
+# Clone the GitHub repository into the container
+RUN git clone https://github.com/mangdangroboticsclub/mini_pupper_2_bsp /tmp/mini_pupper_2_bsp
+
+# Set the working directory to the Python package directory
+WORKDIR /tmp/mini_pupper_2_bsp/Python_Module
+RUN apt update 
+RUN apt install python3-pip python3-dev python-is-python3 -y
+# Install Python dependencies from requirements.txt if available
+RUN pip install -r requirements.txt
+
+# Install your Python package
+RUN python setup.py install
 
 USER ${NB_USER}
 WORKDIR /home/${NB_USER}
@@ -133,11 +149,11 @@ WORKDIR /home/${NB_USER}
 COPY --chown=${NB_USER}:users ./jupyter-settings.json /opt/conda/share/jupyter/lab/settings/overrides.json
 
 # Clone the demos_ros_cpp package from within the ROS Demos monorepo.
-RUN mkdir -p /ws/src
-ADD robot_ws/src /ws/src
-WORKDIR /ws
+RUN mkdir -p /home/${NB_USER}/ws/src
+ADD robot_ws/src /home/${NB_USER}/ws/src
+WORKDIR /home/${NB_USER}/ws
 
-    
+USER root    
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} \
      --skip-keys=gazebo_plugins \

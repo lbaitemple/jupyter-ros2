@@ -23,6 +23,10 @@ services:
     entrypoint: ["/home/jovyan/work/entrypoint.sh"]
     volumes:
       - ./:/home/jovyan/work
+      - /dev:/dev
+      - /sys:/sys
+      - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
+
     #   - /tmp/.X11-unix:/tmp/.X11-unix:rw
     # environment:
     #   - DISPLAY
