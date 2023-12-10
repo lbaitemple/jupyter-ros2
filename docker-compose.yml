@@ -26,7 +26,8 @@ services:
       - /dev:/dev
       - /sys:/sys
       - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
-
+    devices:
+      - "/dev/snd:/dev/snd"
     #   - /tmp/.X11-unix:/tmp/.X11-unix:rw
     # environment:
     #   - DISPLAY
