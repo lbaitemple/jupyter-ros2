@@ -161,6 +161,7 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
      --skip-keys=gazebo_plugins \
     --skip-keys=velodyne_gazebo_plugins -y && \
     colcon build --build-base workspace/build --install-base /opt/ros_demos
+RUN apt-get update && apt-get install -y alsa-utils && usermod -aG audio ${NB_USER}
 
 # --- Entrypoint --- #
 COPY --chown=${NB_USER}:users entrypoint.sh /
