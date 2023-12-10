@@ -83,6 +83,8 @@ RUN pip install --upgrade \
         openai \
         opencv-python \
         sidecar \
+        pydub \ 
+        simpleaudio \
         Pillow \
         rosdep \
         lark \
