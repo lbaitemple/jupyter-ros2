@@ -139,4 +139,8 @@ source "$OSH"/oh-my-bash.sh
 # Example aliases
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
+alias dance="ros2 launch mini_pupper_dance enhanced_dance.launch.py  hardware_connected:=false"
+#alias send_cmd="ros2 topic pub --once /dance_config std_msgs/String "data: 'my_dance'""
+alias send_cmd='ros2 topic pub --once /dance_config std_msgs/String "data: '\''my_dance'\''"'
+
 eval "$(command conda shell.bash hook 2> /dev/null)"

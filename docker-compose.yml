@@ -24,6 +24,7 @@ services:
     volumes:
       - ./:/home/jovyan/work
       - /dev:/dev
+      - /dev/snd:/dev/snd
       - /sys:/sys
       - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
     devices:
